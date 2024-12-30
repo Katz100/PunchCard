@@ -18,11 +18,13 @@ class SupaAuth : public QObject
     Q_PROPERTY(METHOD method READ method WRITE setMethod NOTIFY methodChanged FINAL)
     Q_PROPERTY(QJsonObject body READ body WRITE setBody NOTIFY bodyChanged FINAL)
     Q_PROPERTY(Endpoint endpoint READ endpoint WRITE setEndpoint NOTIFY endpointChanged FINAL)
+    Q_PROPERTY(bool requestInProgress READ requestInProgress NOTIFY requestInProgressChanged FINAL)
+
     QML_ELEMENT
 public:
     explicit SupaAuth(QObject *parent = nullptr);
 
-    Q_INVOKABLE QVariant sendAuth();
+    Q_INVOKABLE void sendAuth();
 
     enum METHOD
     {
@@ -62,7 +64,12 @@ public:
     SupaAuth::METHOD method() const;
     void setMethod(METHOD newMethod);
 
+    bool requestInProgress() const;
+    void setRequestInProgress(bool newProgress);
+
 signals:
+    void messageReceived(QVariant message);
+
     void projectIdChanged();
     void keyChanged();
 
@@ -74,6 +81,8 @@ signals:
 
     void methodChanged();
 
+    void requestInProgressChanged();
+
 private:
     QString m_projectId;
     QString m_key;
@@ -84,6 +93,7 @@ private:
 
     QNetworkAccessManager m_manager;
     QNetworkRequest m_request;
+    bool m_requestInProgress = false;
 };
 
 #endif // SUPAAUTH_H

@@ -5,8 +5,9 @@ SupaAuth::SupaAuth(QObject *parent)
     : QObject{parent}
 {}
 
-QVariant SupaAuth::sendAuth()
+void SupaAuth::sendAuth()
 {
+    setRequestInProgress(true);
     QString new_url = QString("https://%1.supabase.co/auth/v1").arg(m_projectId);
 
     switch (m_endpoint)
@@ -30,7 +31,7 @@ QVariant SupaAuth::sendAuth()
         new_url.append("/logout");
         break;
     default:
-        return QVariant("Error: not a valid ENUM.");
+        return;
         break;
     }
 
@@ -42,6 +43,7 @@ QVariant SupaAuth::sendAuth()
 
     QNetworkReply* reply;
 
+    m_requestInProgress = true;
     switch (m_method) {
     case POST:
         reply = m_manager.post(m_request, data);
@@ -55,31 +57,26 @@ QVariant SupaAuth::sendAuth()
         break;
     }
 
-    QEventLoop eventLoop;
-    QObject::connect(reply, &QNetworkReply::finished, &eventLoop, &QEventLoop::quit);
-    eventLoop.exec();
+    QObject::connect(reply, &QNetworkReply::finished, this, [this, reply](){
+        setRequestInProgress(false);
+        if (reply->error() == QNetworkReply::NoError)
+        {
+            QByteArray response = reply->readAll();
+            QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
 
-    if(reply->error() == QNetworkReply::NoError)
-    {
-        QByteArray response = reply->readAll();
-        QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
+            QJsonObject successObject = jsonDoc.object();
+            successObject["supabase_status"] = 200;
+            emit messageReceived(QJsonDocument(successObject).toVariant());
+        }
+        else
+        {
+            qDebug() << reply->errorString();
+            QJsonObject errorObject;
+            errorObject["supabase_status"] = 400;
+            emit messageReceived(QJsonDocument(errorObject).toVariant());
+        }
         reply->deleteLater();
-
-        QJsonObject successObject = jsonDoc.object();
-        successObject["supabase_status"] = 200;
-        return QJsonDocument(successObject).toVariant();
-    }
-    else
-    {
-        qDebug() << reply->error();
-        reply->deleteLater();
-        QJsonObject errorObject;
-        errorObject["supabase_status"] = 400;
-        return QJsonDocument(errorObject).toVariant();
-    }
-
-    reply->deleteLater();
-    return QVariant();
+    });
 }
 
 QString SupaAuth::projectId() const
@@ -158,4 +155,17 @@ void SupaAuth::setMethod(METHOD newMethod)
         return;
     m_method = newMethod;
     emit methodChanged();
+}
+
+bool SupaAuth::requestInProgress() const
+{
+    return m_requestInProgress;
+}
+
+void SupaAuth::setRequestInProgress(bool newProgress)
+{
+    if (m_requestInProgress != newProgress) {
+        m_requestInProgress = newProgress;
+        emit requestInProgressChanged();
+    }
 }

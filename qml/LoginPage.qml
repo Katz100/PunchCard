@@ -16,7 +16,7 @@ Page {
         ColumnLayout {
             id: mainLayout
             anchors {left: parent.left; right: parent.right; top: parent.top;
-                    leftMargin: 20; rightMargin: 20}
+                leftMargin: 20; rightMargin: 20}
 
 
             Image {
@@ -60,16 +60,16 @@ Page {
                         "email": emailField.text,
                         "password": passwordField.text
                     }
-
-                    Data.userDetails = auth.sendAuth()
-                    if (Data.userDetails.supabase_status === 200) {
-                        root.jwt = Data.userDetails.access_token
-                        stackView.push("CustomerHomePage.qml")
-                    } else {
-                        invalidInformation = true
-                    }
-
+                    console.log(auth.requestInProgress)
+                    auth.sendAuth()
+                    console.log(auth.requestInProgress)
                 }
+            }
+
+            BusyIndicator {
+                id: busyIndicator
+                running: auth.requestInProgress
+                Layout.alignment: Qt.AlignHCenter
             }
 
         }
@@ -81,6 +81,20 @@ Page {
         key: root.key
         method: SupaAuth.POST
         endpoint: SupaAuth.SIGNIN
+        onMessageReceived: message => {
+            console.log("test")
+            Data.userDetails = message
+            if (Data.userDetails.supabase_status === 200) {
+                root.jwt = Data.userDetails.access_token
+                console.log(jwt)
+                stackView.push("CustomerHomePage.qml")
+            } else {
+                invalidInformation = true
+            }
+        }
     }
 
 }
+
+
+
