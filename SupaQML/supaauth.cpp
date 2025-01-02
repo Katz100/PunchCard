@@ -59,6 +59,7 @@ void SupaAuth::sendAuth()
 
     QObject::connect(reply, &QNetworkReply::finished, this, [this, reply](){
         setRequestInProgress(false);
+        //Credentials match
         if (reply->error() == QNetworkReply::NoError)
         {
             QByteArray response = reply->readAll();
@@ -70,10 +71,20 @@ void SupaAuth::sendAuth()
         }
         else
         {
-            qDebug() << reply->errorString();
-            QJsonObject errorObject;
-            errorObject["supabase_status"] = 400;
-            emit messageReceived(QJsonDocument(errorObject).toVariant());
+            //No connection to supabase
+            if (reply->error() == QNetworkReply::HostNotFoundError || reply->error() == QNetworkReply::UnknownNetworkError)
+            {
+                QJsonObject errorObject;
+                errorObject["supabase_status"] = 404;
+                emit messageReceived(QJsonDocument(errorObject).toVariant());
+            }
+            else
+            {
+                //Credentials do not match
+                QJsonObject errorObject;
+                errorObject["supabase_status"] = 400;
+                emit messageReceived(QJsonDocument(errorObject).toVariant());
+            }
         }
         reply->deleteLater();
     });

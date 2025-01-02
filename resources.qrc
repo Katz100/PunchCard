@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>imgs/royalty-card.png</file>
+        <file>imgs/email-icon.png</file>
+        <file>imgs/password-icon.png</file>
+        <file>imgs/hide-pass-icon.png</file>
+        <file>imgs/show-pass-icon.png</file>
+    </qresource>
+</RCC>

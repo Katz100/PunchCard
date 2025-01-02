@@ -20,9 +20,6 @@ Window {
         property int checkValue: Qt.Unchecked
     }
     /*
-git remote add origin https://github.com/Katz100/MyPunchCard.git
-git branch -M main
-git push -u origin main
     SupaSocket {
         id: socket
         sendHeartbeatMessage: true
