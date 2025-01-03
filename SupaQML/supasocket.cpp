@@ -30,16 +30,12 @@ SupaSocket::SupaSocket(QObject *parent)
         qDebug() << error;
     });
 
-    QObject::connect(&m_webSocket, &QWebSocket::textMessageReceived, this, [](const QString& message){
-        QJsonParseError parseError;
-        QJsonDocument jsonDoc = QJsonDocument::fromJson(message.toUtf8(), &parseError);
-
-        if (parseError.error == QJsonParseError::NoError) {
-            // Format and print the JSON
-            qDebug().noquote() << "Received JSON:" << jsonDoc.toJson(QJsonDocument::Indented);
+    QObject::connect(&m_webSocket, &QWebSocket::textMessageReceived, this, [this](const QString& message){
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(message.toUtf8());
+        if (!jsonDoc.isNull() && jsonDoc.isObject()) {
+            emit messageReceived(jsonDoc.toVariant());
         } else {
-            // Print the raw message if it's not valid JSON
-            qWarning() << "Failed to parse JSON. Raw message:" << message;
+            qWarning() << "Invalid JSON message received:" << message;
         }
     });
 

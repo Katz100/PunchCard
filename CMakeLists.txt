@@ -38,6 +38,8 @@ qt_add_qml_module(appMyPunchCard
         QML_FILES qml/ChangePassword.qml
         QML_FILES qml/SignOut.qml
         QML_FILES qml/userData.js
+        QML_FILES qml/ConfirmSignUpPage.qml
+        RESOURCES android/AndroidManifest.xml android/build.gradle android/res/values/libs.xml android/res/xml/qtprovider_paths.xml
 )
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an

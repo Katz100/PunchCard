@@ -10,14 +10,13 @@ Page {
     property bool txtVisible: false
     property bool showPassword: false
     property bool invalidInformation: false
-
-    Rectangle {
-        anchors.fill: parent
+    property bool validEmail: false
+    property bool validPassword: false
         ColumnLayout {
             id: mainLayout
             spacing: 20
             anchors {left: parent.left; right: parent.right; top: parent.top;
-                leftMargin: 20; rightMargin: 20}
+                     leftMargin: 20; rightMargin: 20}
 
             Image {
                 source: "qrc:/imgs/royalty-card.png"
@@ -40,7 +39,7 @@ Page {
             RowLayout {
                 Layout.fillWidth: true
                 Image {
-                    source: "qrc:/imgs/email-icon.png"
+                    source: !validEmail ? "qrc:/imgs/email-icon.png" : "qrc:/imgs/email-green-icon.png"
                 }
 
                 TextField {
@@ -48,13 +47,21 @@ Page {
                     Layout.fillWidth: true
                     placeholderText: qsTr("Email")
                     inputMethodHints: Qt.ImhNoPredictiveText
+                    onTextChanged: {
+                        const regex = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i
+                        if(regex.test(emailField.text)) {
+                            validEmail = true
+                        } else {
+                            validEmail = false
+                        }
+                    }
                 }
             }
 
             RowLayout {
                 Layout.fillWidth: true
                 Image {
-                    source: "qrc:/imgs/password-icon.png"
+                    source: !validPassword ? "qrc:/imgs/password-icon.png" : "qrc:/imgs/password-green-icon.png"
                 }
                 TextField {
                     id: passwordField
@@ -72,19 +79,36 @@ Page {
 
                         anchors {right: parent.right; verticalCenter: parent.verticalCenter; rightMargin: 5}
                     }
+
+                    onTextChanged: {
+                        if (passwordField.length >= 6) {
+                            validPassword = true
+                        } else {
+                            validPassword = false
+                        }
+                    }
                 }
+            }
+
+            Label {
+                text: "Forgot Password?"
+                color: "blue"
+                Layout.alignment: Qt.AlignRight
             }
 
             Button {
                 id: signInButton
                 text: qsTr("Sign In")
                 Layout.fillWidth: true
+                enabled: validEmail && validPassword
                 onClicked: {
-                    auth.body = {
-                        "email": emailField.text,
-                        "password": passwordField.text
+                    if (validEmail && validPassword ) {
+                        auth.body = {
+                            "email": emailField.text,
+                            "password": passwordField.text
+                        }
+                        auth.sendAuth()
                     }
-                    auth.sendAuth()
                 }
             }
 
@@ -110,7 +134,7 @@ Page {
             }
 
         }
-    }
+
 
     SupaAuth {
         id: auth

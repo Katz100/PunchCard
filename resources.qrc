@@ -5,5 +5,9 @@
         <file>imgs/password-icon.png</file>
         <file>imgs/hide-pass-icon.png</file>
         <file>imgs/show-pass-icon.png</file>
+        <file>imgs/email-green-icon.png</file>
+        <file>imgs/password-green-icon.png</file>
+        <file>imgs/user-green-icon.png</file>
+        <file>imgs/user-icon.png</file>
     </qresource>
 </RCC>

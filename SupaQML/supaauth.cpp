@@ -81,6 +81,7 @@ void SupaAuth::sendAuth()
             else
             {
                 //Credentials do not match
+                qDebug() << reply->error();
                 QJsonObject errorObject;
                 errorObject["supabase_status"] = 400;
                 emit messageReceived(QJsonDocument(errorObject).toVariant());

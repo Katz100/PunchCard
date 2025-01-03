@@ -37,6 +37,7 @@ public:
     void setSendHeartbeatMessage(bool newSendHeartbeatMessage);
 
 signals:
+    void messageReceived(QVariant message);
     void projectIdChanged();
     void keyChanged();
 
