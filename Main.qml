@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtCore
-import SupaQML
 
 //TODO: password recovery endpoint
 Window {

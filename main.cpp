@@ -6,7 +6,6 @@ int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
     app.setOrganizationName("Katz Company");
-    qDebug() << "******************Supports ssl: " << QSslSocket::supportsSsl();
     QQmlApplicationEngine engine;
     QObject::connect(
         &engine,
