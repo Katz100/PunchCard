@@ -39,11 +39,11 @@ Page {
         onMessageReceived: message => {
                                if(message.event === "INSERT") {
                                    if (message.payload.record.id === root.tempId) {
+                                       //User is confirmed so sign them in.
                                        auth.body = {
                                            "email": root.tempEmail,
                                            "password": root.tempPassword
                                        }
-
                                        auth.sendAuth()
                                    }
                                }
@@ -62,7 +62,11 @@ Page {
                                } else if (message.supabase_status === 200) {
                                    Data.userDetails = message
                                    root.jwt = Data.userDetails.access_token
-                                   stackView.push("CustomerHomePage.qml")
+                                   if (Data.userDetails.user.user_metadata.role === "customer") {
+                                       stackView.push("CustomerHomePage.qml")
+                                   } else {
+                                       stackView.push("CompanyHomePage.qml")
+                                   }
                                } else {
                                    console.log(JSON.stringify(message))
                                }

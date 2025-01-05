@@ -23,10 +23,8 @@ Window {
         property string username: ""
         property string password: ""
         property int checkValue: Qt.Unchecked
+        property string qrCodeData: ""
     }
-    /*
-
-    */
 
     StackView {
         id: stackView

@@ -7,6 +7,8 @@ import SupaQML
 Page {
     title: qsTr("Sign Up Page")
     property bool txtVisible: false
+    property string errorTxt: ""
+
     property bool showPassword: false
     property bool invalidInformation: false
     property bool validEmail: false
@@ -31,7 +33,7 @@ Page {
 
         Label {
             id: invalidTxt
-            text: qsTr("Email already in use.")
+            text: errorTxt
             color: "red"
             visible: invalidInformation
             Layout.alignment: Qt.AlignCenter
@@ -112,6 +114,12 @@ Page {
             }
         }
 
+        Label {
+            text: "Business Sign Up"
+            color: "blue"
+            Layout.alignment: Qt.AlignRight
+        }
+
         Button {
             id: signUpButton
             text: qsTr("Sign Up")
@@ -165,6 +173,7 @@ Page {
                                } else if (message.supabase_status === 200) {
                                    if (message.identities.length === 0) {
                                        invalidInformation = true
+                                       errorTxt = "Email already in use."
                                    } else {
                                        root.tempId = message.id
                                        root.tempEmail = emailField.text
@@ -173,8 +182,8 @@ Page {
                                        stackView.push("ConfirmSignUpPage.qml")
                                    }
                                } else {
-                                   console.log(JSON.stringify(message))
                                    invalidInformation = true
+                                   errorTxt = JSON.stringify(message.msg)
                                }
                            }
     }

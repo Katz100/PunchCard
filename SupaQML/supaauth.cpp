@@ -80,9 +80,12 @@ void SupaAuth::sendAuth()
             }
             else
             {
-                //Credentials do not match
+                //Invalid operation
                 qDebug() << reply->error();
-                QJsonObject errorObject;
+                QByteArray response = reply->readAll();
+                QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
+
+                QJsonObject errorObject = jsonDoc.object();
                 errorObject["supabase_status"] = 400;
                 emit messageReceived(QJsonDocument(errorObject).toVariant());
             }
