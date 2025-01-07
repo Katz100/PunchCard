@@ -31,4 +31,13 @@ Window {
         anchors.fill: parent
         initialItem: "qml/LoginPage.qml"
     }
+
+    onClosing: close => {
+            if(stackView.depth > 1){
+                close.accepted = false
+                stackView.pop();
+            }else{
+                return;
+            }
+        }
 }

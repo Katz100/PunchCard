@@ -103,15 +103,13 @@ Page {
             id: signInButton
             text: qsTr("Sign In")
             Layout.fillWidth: true
-            enabled: validEmail && validPassword
+            //enabled: validEmail && validPassword
             onClicked: {
-                if (validEmail && validPassword ) {
-                    auth.body = {
-                        "email": emailField.text,
-                        "password": passwordField.text
-                    }
-                    auth.sendAuth()
+                auth.body = {
+                    "email": emailField.text,
+                    "password": passwordField.text
                 }
+                auth.sendAuth()
             }
         }
 
@@ -149,6 +147,7 @@ Page {
                                if (message.supabase_status === 404) {
                                    dialog.open()
                                } else if (message.supabase_status === 200) {
+                                   invalidInformation = false
                                    Data.userDetails = message
                                    root.jwt = Data.userDetails.access_token
                                    if (Data.userDetails.user.user_metadata.role === "customer") {

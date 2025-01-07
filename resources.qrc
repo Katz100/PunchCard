@@ -9,5 +9,10 @@
         <file>imgs/password-green-icon.png</file>
         <file>imgs/user-green-icon.png</file>
         <file>imgs/user-icon.png</file>
+        <file>imgs/tag-icon.png</file>
+        <file>imgs/qr-icon.png</file>
+        <file>imgs/right-arrow-icon.png</file>
+        <file>imgs/sign-out-icon.png</file>
+        <file>imgs/trash-icon.png</file>
     </qresource>
 </RCC>

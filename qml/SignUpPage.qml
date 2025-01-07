@@ -195,10 +195,4 @@ Page {
         anchors.centerIn: parent
     }
 
-    Keys.onReleased: {
-        if (event.key === Qt.Key_Back) {
-            stackView.pop()
-            event.accepted = true
-        }
-    }
 }
