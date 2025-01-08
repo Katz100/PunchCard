@@ -67,6 +67,11 @@ void SupaSocket::sendTextMessage(QJsonObject payload)
     m_webSocket.sendTextMessage(strJson);
 }
 
+void SupaSocket::closeConnection()
+{
+    m_webSocket.close();
+}
+
 QString SupaSocket::projectId() const
 {
     return m_projectId;

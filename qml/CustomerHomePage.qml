@@ -18,6 +18,15 @@ Page {
         id: img
         anchors.centerIn: parent
         source: settings.qrCodeData
+        visible: false
+    }
+
+    RoyaltyCard {
+        anchors.centerIn: parent
+        totalPunches: 6
+        completedPunches: 3
+        punchSize: 30
+        spacing: 12
     }
 
     QRCode {

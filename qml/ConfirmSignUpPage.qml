@@ -40,6 +40,7 @@ Page {
                                if(message.event === "INSERT") {
                                    if (message.payload.record.id === root.tempId) {
                                        //User is confirmed so sign them in.
+                                       socket.closeConnection()
                                        auth.body = {
                                            "email": root.tempEmail,
                                            "password": root.tempPassword

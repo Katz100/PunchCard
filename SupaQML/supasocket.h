@@ -22,6 +22,7 @@ public:
 
     Q_INVOKABLE void openConnection();
     Q_INVOKABLE void sendTextMessage(QJsonObject payload);
+    Q_INVOKABLE void closeConnection();
 
 
     QString projectId() const;

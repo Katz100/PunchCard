@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtCore
 
 //TODO: password recovery endpoint
+//TODO: change qr code for different login
 Window {
     id: root
     width: 640
