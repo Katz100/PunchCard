@@ -1,21 +1,24 @@
-import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 
 Rectangle {
     id: punchCard
-    property int totalPunches: 10
-    property int completedPunches: 0
-    property int punchSize: 24
-    property int spacing: 8
+    property string companyName: "Company"
+    property int totalPunches: 12
+    property int completedPunches: 7
+    property int punchSize: 40
+    property int spacing: 12
+    property int columns: 4
 
     radius: 12
     color: "#F5F5F5"
     border.color: "#CCCCCC"
     border.width: 2
 
-    implicitWidth: (totalPunches * punchSize) + ((totalPunches - 1) * spacing) + 32
-    implicitHeight: punchSize + 120
+    // Dynamically calculate the size
+    implicitWidth: (columns * punchSize) + ((columns - 1) * spacing) + 32
+    implicitHeight: (Math.ceil(totalPunches / columns) * punchSize) + ((Math.ceil(totalPunches / columns) - 1) * spacing) + 120
 
     ColumnLayout {
         anchors.fill: parent
@@ -24,7 +27,7 @@ Rectangle {
 
         // Header Text
         Text {
-            text: "Punch Card"
+            text: companyName
             font.pixelSize: 24
             font.bold: true
             color: "#000000"
@@ -39,10 +42,12 @@ Rectangle {
             Layout.fillWidth: true
         }
 
-        // Punch Row
-        RowLayout {
-            id: punchRow
-            spacing: punchCard.spacing
+        // Punch Grid
+        GridLayout {
+            id: punchGrid
+            columns: punchCard.columns
+            rowSpacing: punchCard.spacing
+            columnSpacing: punchCard.spacing
             Layout.alignment: Qt.AlignHCenter
 
             Repeater {
@@ -69,6 +74,8 @@ Rectangle {
 
     }
 }
+
+
 
 
 

@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtCore
-
+import SupaQML
 //TODO: password recovery endpoint
 //TODO: change qr code for different login
 Window {
@@ -33,12 +33,16 @@ Window {
         initialItem: "qml/LoginPage.qml"
     }
 
+    ListModel {
+        id: punchCardListModel
+    }
+
     onClosing: close => {
-            if(stackView.depth > 1){
-                close.accepted = false
-                stackView.pop();
-            }else{
-                return;
-            }
-        }
+                   if(stackView.depth > 1){
+                       close.accepted = false
+                       stackView.pop();
+                   }else{
+                       return;
+                   }
+               }
 }

@@ -24,7 +24,7 @@ class SupaServer : public QObject
 public:
     explicit SupaServer(QObject *parent = nullptr);
 
-    Q_INVOKABLE QVariant sendFunctionCall();
+    Q_INVOKABLE void sendFunctionCall();
     Q_INVOKABLE QVariant sendQuery(QString table, QString query);
 
     QString key() const;
@@ -48,7 +48,7 @@ public:
 
 signals:
 
-    void messageReceived(QJsonObject message);
+    void messageReceived(QVariant message);
     void apiCallFailed(QString message);
 
     void keyChanged();

@@ -43,7 +43,7 @@ void SupaServer::setIsUrlValid(bool newIsUrlValid)
     emit isUrlValidChanged();
 }
 
-QVariant SupaServer::sendFunctionCall()
+void SupaServer::sendFunctionCall()
 {
     QString new_url = QString("https://%1.supabase.co/rest/v1/rpc").arg(m_projectId) + "/" + m_func;
     m_request.setRawHeader("apikey", m_key.toUtf8());
@@ -54,24 +54,37 @@ QVariant SupaServer::sendFunctionCall()
 
     QNetworkReply* reply = m_manager.post(m_request, data);
 
-    QEventLoop eventLoop;
-    QObject::connect(reply, &QNetworkReply::finished, &eventLoop, &QEventLoop::quit);
-    eventLoop.exec();
-    if (reply->error() == QNetworkReply::NoError)
-    {
-        setIsUrlValid(true);
-        QByteArray response = reply->readAll();
-        QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
-        qDebug() << jsonDoc;
+    QObject::connect(reply, &QNetworkReply::finished, this, [this, reply](){
+        if (reply->error() == QNetworkReply::NoError)
+        {
+            QByteArray response = reply->readAll();
+            QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
+            emit messageReceived(jsonDoc.toVariant());
+        }
+        else
+        {
+            //No connection to supabase
+            if (reply->error() == QNetworkReply::HostNotFoundError || reply->error() == QNetworkReply::UnknownNetworkError)
+            {
+                QJsonObject errorObject;
+                errorObject["supabase_status"] = 404;
+                emit messageReceived(QJsonDocument(errorObject).toVariant());
+            }
+            else
+            {
+                //Invalid operation
+                qDebug() << reply->error();
+                QByteArray response = reply->readAll();
+                QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
+
+                QJsonObject errorObject = jsonDoc.object();
+                errorObject["supabase_status"] = 400;
+                emit messageReceived(QJsonDocument(errorObject).toVariant());
+            }
+        }
         reply->deleteLater();
-        return jsonDoc.toVariant();
-    }
-    else {
-        reply->deleteLater();
-        setIsUrlValid(false);
-        emit apiCallFailed(reply->errorString());
-        return QVariant();
-    }
+    });
+
 }
 
 QVariant SupaServer::sendQuery(QString table, QString query)

@@ -64,7 +64,6 @@ void SupaAuth::sendAuth()
         {
             QByteArray response = reply->readAll();
             QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
-
             QJsonObject successObject = jsonDoc.object();
             successObject["supabase_status"] = 200;
             emit messageReceived(QJsonDocument(successObject).toVariant());
