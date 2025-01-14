@@ -5,6 +5,9 @@ import SupaQML
 import "userData.js" as Data
 
 Page {
+
+    property bool showPassword: false
+
     ColumnLayout {
         anchors.fill: parent
 
@@ -21,23 +24,34 @@ Page {
         RowLayout {
             Image {
                 id: userIconImg
-                source: "qrc:/imgs/user-icon.png"
+                source: "qrc:/imgs/password-icon.png"
             }
 
             TextField {
-                id: nameField
-                text: Data.userDetails.user.user_metadata.display_name
+                id: passField
                 Layout.fillWidth: true
+                placeholderText: qsTr("Password")
+                inputMethodHints: Qt.ImhNoPredictiveText
+                echoMode: showPassword ? TextInput.Normal : TextInput.Password
+                Image {
+                    source: showPassword ? "qrc:/imgs/show-pass-icon.png" : "qrc:/imgs/hide-pass-icon.png"
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: showPassword = !showPassword
+                    }
+
+                    anchors {right: parent.right; verticalCenter: parent.verticalCenter; rightMargin: 5}
+                }
             }
         }
 
         Button {
-            text: "Update Name"
+            text: "Change Password"
             Layout.fillWidth: true
             onClicked: {
                 auth.body = {
                     "data": {
-                        "display_name": nameField.text
+                        "password": passField.text
                     }
                 }
                 auth.sendAuth()

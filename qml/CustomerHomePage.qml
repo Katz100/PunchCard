@@ -6,6 +6,25 @@ import MyPunchCard
 import SupaQML
 Page {
     title: qsTr("Customer Home Page")
+    objectName: "CustomerHomePage"
+    header: Rectangle {
+        color: "lightgray"
+        height: 55
+        RowLayout {
+            anchors.fill: parent
+            Image {
+                id: userImg
+                source: "qrc:/imgs/user-icon.png"
+                Layout.alignment: Qt.AlignRight
+                Layout.topMargin: 20
+                Layout.rightMargin: 40
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: stackView.push("Settings.qml")
+                }
+            }
+        }
+    }
 
     SwipeView {
         id: swipeView
@@ -45,9 +64,10 @@ Page {
         }
     }
 
+    /*
     Label {
         text: "Hello " + Data.userDetails.user.email
-    }
+    }*/
 
     QRCode {
         id: qrCode
@@ -67,7 +87,7 @@ Page {
     }
 
     footer: Rectangle {
-        color: "gray"
+        color: "lightgray"
         height: 75
         RowLayout {
             anchors.fill: parent

@@ -19,7 +19,7 @@ void SupaAuth::sendAuth()
         new_url.append("/token?grant_type=password");
         break;
     case REFRESH:
-        new_url.append("/token?grant_type=refresh");
+        new_url.append("/token?grant_type=refresh_token");
         break;
     case RECOVER:
         new_url.append("/recover");

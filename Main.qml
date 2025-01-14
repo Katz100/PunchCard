@@ -38,7 +38,7 @@ Window {
     }
 
     onClosing: close => {
-                   if(stackView.depth > 1){
+                   if(stackView.depth > 1 && (stackView.currentItem.objectName !== "CustomerHomePage")){
                        close.accepted = false
                        stackView.pop();
                    }else{
