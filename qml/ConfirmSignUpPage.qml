@@ -66,12 +66,30 @@ Page {
                                    if (Data.userDetails.user.user_metadata.role === "customer") {
                                        stackView.push("CustomerHomePage.qml")
                                    } else {
-                                       stackView.push("CompanyHomePage.qml")
+                                       server.sendFunctionCall()
                                    }
                                } else {
                                    console.log(JSON.stringify(message))
                                }
                            }
+    }
+
+    SupaServer {
+        id: server
+        projectId: root.projectId
+        key: root.key
+        authorization: root.jwt
+        func: "add_user_company"
+        parameters: {
+            "c_name": settings.store,
+            "c_address" : settings.address,
+            "c_phone" : settings.phone,
+            "c_website": settings.website,
+            "c_reward": settings.reward,
+            "c_stamps": settings.stamps
+        }
+
+        onMessageReceived: stackView.push("CompanyHomePage.qml")
     }
 
     Dialog {

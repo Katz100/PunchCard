@@ -19,16 +19,20 @@ Page {
         }
 
         Label {
-            text: "Are you sure you want to sign out?"
+            text: "Are you sure you want to delete your account?"
             Layout.alignment: Qt.AlignHCenter
         }
 
         Button {
-            text: "Sign Out"
+            text: "Delete Account"
             Layout.fillWidth: true
-            Layout.alignment: Qt.AlignCenter
             onClicked: {
-                auth.sendAuth()
+                server.sendFunctionCall()
+                Data.userDetails = {}
+                root.jwt = ""
+                stackView.pop()
+                stackView.pop()
+                stackView.pop()
             }
         }
 
@@ -37,21 +41,20 @@ Page {
         }
     }
 
-    SupaAuth {
-        id: auth
+    SupaServer {
+        id: server
         projectId: root.projectId
         key: root.key
         authorization: root.jwt
-        method: SupaAuth.POST
-        endpoint: SupaAuth.LOGOUT
+        func: "delete_user"
 
         onMessageReceived: message => {
-                                Data.userDetails = {}
-                               root.jwt = ""
-                               stackView.pop()
-                               stackView.pop()
-                               stackView.pop()
+                               console.log(JSON.stringify(message, null, 2))
                            }
+
+
     }
+
+
 
 }

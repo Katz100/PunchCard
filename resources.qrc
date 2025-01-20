@@ -14,5 +14,11 @@
         <file>imgs/right-arrow-icon.png</file>
         <file>imgs/sign-out-icon.png</file>
         <file>imgs/trash-icon.png</file>
+        <file>imgs/address-icon.png</file>
+        <file>imgs/gift-icon.png</file>
+        <file>imgs/phone-icon.png</file>
+        <file>imgs/stamp-icon.png</file>
+        <file>imgs/store-icon.png</file>
+        <file>imgs/website-icon.png</file>
     </qresource>
 </RCC>

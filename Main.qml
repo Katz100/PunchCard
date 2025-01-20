@@ -21,10 +21,14 @@ Window {
 
     Settings {
         id: settings
-        property string username: ""
-        property string password: ""
-        property int checkValue: Qt.Unchecked
         property string qrCodeData: ""
+
+        property string store: ""
+        property string phone: ""
+        property string address: ""
+        property string website: ""
+        property string reward: ""
+        property int stamps: 0
     }
 
     StackView {

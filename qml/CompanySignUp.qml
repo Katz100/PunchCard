@@ -114,15 +114,79 @@ Page {
             }
         }
 
-        Label {
-            text: "Business Sign Up"
-            color: "blue"
-            Layout.alignment: Qt.AlignRight
-            MouseArea {
-                anchors.fill: parent
-                onClicked: stackView.push("CompanySignUp.qml")
+        RowLayout {
+            Layout.fillWidth: true
+            Image {
+                source: "qrc:/imgs/store-icon.png"
+            }
+            TextField {
+                id: storeField
+                Layout.fillWidth: true
+                placeholderText: qsTr("Company Name")
             }
         }
+
+        RowLayout {
+            Layout.fillWidth: true
+            Image {
+                source: "qrc:/imgs/phone-icon.png"
+            }
+            TextField {
+                id: phoneField
+                Layout.fillWidth: true
+                placeholderText: qsTr("Phone Number")
+            }
+        }
+
+        RowLayout {
+            Layout.fillWidth: true
+            Image {
+                source: "qrc:/imgs/address-icon.png"
+            }
+            TextField {
+                id: addressField
+                Layout.fillWidth: true
+                placeholderText: qsTr("Address")
+            }
+        }
+
+        RowLayout {
+            Layout.fillWidth: true
+            Image {
+                source: "qrc:/imgs/website-icon.png"
+            }
+            TextField {
+                id: websiteField
+                Layout.fillWidth: true
+                placeholderText: qsTr("Website")
+            }
+        }
+
+        RowLayout {
+            Layout.fillWidth: true
+            Image {
+                source: "qrc:/imgs/gift-icon.png"
+            }
+            TextField {
+                id: rewardField
+                Layout.fillWidth: true
+                placeholderText: qsTr("Reward Name (e.g. free pizza)")
+            }
+        }
+
+        RowLayout {
+            Layout.fillWidth: true
+            Image {
+                source: "qrc:/imgs/stamp-icon.png"
+            }
+            TextField {
+                id: stampsField
+                Layout.fillWidth: true
+                placeholderText: qsTr("Stamps Required")
+            }
+        }
+
+
 
         Button {
             id: signUpButton
@@ -182,7 +246,14 @@ Page {
                                        root.tempId = message.id
                                        root.tempEmail = emailField.text
                                        root.tempPassword = passwordField.text
-                                       console.log(JSON.stringify(message.id))
+
+                                       settings.store = storeField.text
+                                       settings.phone = phoneField.text
+                                       settings.address = addressField.text
+                                       settings.website = websiteField.text
+                                       settings.reward = rewardField.text
+                                       settings.stamps = parseInt(stampsField.text)
+
                                        stackView.push("ConfirmSignUpPage.qml")
                                    }
                                } else {
@@ -191,6 +262,8 @@ Page {
                                }
                            }
     }
+
+
 
     Dialog {
         id: dialog

@@ -24,7 +24,6 @@ Page {
             text: Data.userDetails.user.email
             Layout.alignment: Qt.AlignHCenter
         }
-
         Rectangle {
             id: updateNameRect
             color: "lightgray"
@@ -157,6 +156,10 @@ Page {
                 Image {
                     source: "qrc:/imgs/right-arrow-icon.png"
                     fillMode: Image.PreserveAspectFit
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: stackView.push("SignOut.qml")
+                    }
                 }
             }
         }
@@ -188,6 +191,10 @@ Page {
                 Image {
                     source: "qrc:/imgs/right-arrow-icon.png"
                     fillMode: Image.PreserveAspectFit
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: stackView.push("DeleteAccount.qml")
+                    }
                 }
             }
         }
