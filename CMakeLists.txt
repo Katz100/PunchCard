@@ -9,7 +9,14 @@ find_package(Qt6 6.5 REQUIRED COMPONENTS Quick)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
+if(QT_VERSION_MAJOR EQUAL 6)
+    list(FILTER SOURCE_CPP EXCLUDE REGEX "SBarcodeFilter.cpp")
+else()
+    list(FILTER SOURCE_CPP EXCLUDE REGEX "SBarcodeScanner.cpp")
+endif()
+
 add_subdirectory(SupaQML)
+add_subdirectory(SCodes/src)
 
 if(ANDROID)
     include(android_openssl/android_openssl.cmake)
@@ -64,6 +71,7 @@ set_target_properties(appMyPunchCard PROPERTIES
 
 target_link_libraries(appMyPunchCard
     PRIVATE Qt6::Quick
+    PUBLIC SCodes
 )
 
 
