@@ -15,217 +15,227 @@ Page {
     property bool validPassword: false
     property bool validName: false
 
-    ColumnLayout {
-        id: mainLayout
-        spacing: 20
-        anchors {left: parent.left; right: parent.right; top: parent.top;
-            leftMargin: 20; rightMargin: 20}
+    ScrollView {
+        width: parent.width
+        height: parent.height
+        contentWidth: mainLayout.width
+        contentHeight: mainLayout.height
+        clip : true
 
-        Image {
-            source: "qrc:/imgs/royalty-card.png"
-            width: 100
-            height: 100
-            Layout.alignment: Qt.AlignHCenter
-            Layout.margins: 50
-            sourceSize.width: 100
-            sourceSize.height: 100
-        }
 
-        Label {
-            id: invalidTxt
-            text: errorTxt
-            color: "red"
-            visible: invalidInformation
-            Layout.alignment: Qt.AlignCenter
-        }
+        ColumnLayout {
+            id: mainLayout
+            spacing: 20
 
-        RowLayout {
-            Layout.fillWidth: true
+            anchors {left: parent.left; right: parent.right; top: parent.top;
+                leftMargin: 20; rightMargin: 20}
+
             Image {
-                source: !validName? "qrc:/imgs/user-icon.png" : "qrc:/imgs/user-green-icon.png"
+                source: "qrc:/imgs/royalty-card.png"
+                width: 100
+                height: 100
+                Layout.alignment: Qt.AlignHCenter
+                Layout.margins: 50
+                sourceSize.width: 100
+                sourceSize.height: 100
             }
 
-            TextField {
-                id: nameField
+            Label {
+                id: invalidTxt
+                text: errorTxt
+                color: "red"
+                visible: invalidInformation
+                Layout.alignment: Qt.AlignCenter
+            }
+
+            RowLayout {
                 Layout.fillWidth: true
-                placeholderText: qsTr("Name")
-                inputMethodHints: Qt.ImhNoPredictiveText
-                onTextChanged: {
-                    if (nameField.text !== "") {
-                        validName = true
-                    } else {
-                        validName = false
-                    }
-                }
-            }
-        }
-
-        RowLayout {
-            Layout.fillWidth: true
-            Image {
-                source: !validEmail ? "qrc:/imgs/email-icon.png" : "qrc:/imgs/email-green-icon.png"
-            }
-
-            TextField {
-                id: emailField
-                Layout.fillWidth: true
-                placeholderText: qsTr("Email")
-                inputMethodHints: Qt.ImhNoPredictiveText
-                onTextChanged: {
-                    const regex = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i
-                    if(regex.test(emailField.text)) {
-                        validEmail = true
-                    } else {
-                        validEmail = false
-                    }
-                }
-            }
-        }
-
-        RowLayout {
-            Layout.fillWidth: true
-            Image {
-                source: !validPassword ? "qrc:/imgs/password-icon.png" : "qrc:/imgs/password-green-icon.png"
-            }
-            TextField {
-                id: passwordField
-                Layout.fillWidth: true
-                placeholderText: qsTr("Password")
-                inputMethodHints: Qt.ImhNoPredictiveText
-                echoMode: showPassword ? TextInput.Normal : TextInput.Password
-                rightPadding: 40
                 Image {
-                    source: showPassword ? "qrc:/imgs/show-pass-icon.png" : "qrc:/imgs/hide-pass-icon.png"
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: showPassword = !showPassword
-                    }
-
-                    anchors {right: parent.right; verticalCenter: parent.verticalCenter; rightMargin: 5}
+                    source: !validName? "qrc:/imgs/user-icon.png" : "qrc:/imgs/user-green-icon.png"
                 }
 
-                onTextChanged: {
-                    if (passwordField.length >= 6) {
-                        validPassword = true
-                    } else {
-                        validPassword = false
+                TextField {
+                    id: nameField
+                    Layout.fillWidth: true
+                    placeholderText: qsTr("Name")
+                    inputMethodHints: Qt.ImhNoPredictiveText
+                    onTextChanged: {
+                        if (nameField.text !== "") {
+                            validName = true
+                        } else {
+                            validName = false
+                        }
                     }
                 }
             }
-        }
 
-        RowLayout {
-            Layout.fillWidth: true
-            Image {
-                source: "qrc:/imgs/store-icon.png"
-            }
-            TextField {
-                id: storeField
+            RowLayout {
                 Layout.fillWidth: true
-                placeholderText: qsTr("Company Name")
-            }
-        }
-
-        RowLayout {
-            Layout.fillWidth: true
-            Image {
-                source: "qrc:/imgs/phone-icon.png"
-            }
-            TextField {
-                id: phoneField
-                Layout.fillWidth: true
-                placeholderText: qsTr("Phone Number")
-            }
-        }
-
-        RowLayout {
-            Layout.fillWidth: true
-            Image {
-                source: "qrc:/imgs/address-icon.png"
-            }
-            TextField {
-                id: addressField
-                Layout.fillWidth: true
-                placeholderText: qsTr("Address")
-            }
-        }
-
-        RowLayout {
-            Layout.fillWidth: true
-            Image {
-                source: "qrc:/imgs/website-icon.png"
-            }
-            TextField {
-                id: websiteField
-                Layout.fillWidth: true
-                placeholderText: qsTr("Website")
-            }
-        }
-
-        RowLayout {
-            Layout.fillWidth: true
-            Image {
-                source: "qrc:/imgs/gift-icon.png"
-            }
-            TextField {
-                id: rewardField
-                Layout.fillWidth: true
-                placeholderText: qsTr("Reward Name (e.g. free pizza)")
-            }
-        }
-
-        RowLayout {
-            Layout.fillWidth: true
-            Image {
-                source: "qrc:/imgs/stamp-icon.png"
-            }
-            TextField {
-                id: stampsField
-                Layout.fillWidth: true
-                placeholderText: qsTr("Stamps Required")
-            }
-        }
-
-
-
-        Button {
-            id: signUpButton
-            text: qsTr("Sign Up")
-            Layout.fillWidth: true
-            enabled: validEmail && validPassword && validName
-            onClicked: {
-                auth.body = {
-                    "email": emailField.text,
-                    "password": passwordField.text,
-                    "data": {
-                        "role": "customer",
-                        "display_name": nameField.text
-                    }
+                Image {
+                    source: !validEmail ? "qrc:/imgs/email-icon.png" : "qrc:/imgs/email-green-icon.png"
                 }
 
-                auth.sendAuth()
+                TextField {
+                    id: emailField
+                    Layout.fillWidth: true
+                    placeholderText: qsTr("Email")
+                    inputMethodHints: Qt.ImhNoPredictiveText
+                    onTextChanged: {
+                        const regex = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i
+                        if(regex.test(emailField.text)) {
+                            validEmail = true
+                        } else {
+                            validEmail = false
+                        }
+                    }
+                }
             }
-        }
 
-        Label {
-            text: "Already have an account?"
-            Layout.alignment: Qt.AlignHCenter
-        }
+            RowLayout {
+                Layout.fillWidth: true
+                Image {
+                    source: !validPassword ? "qrc:/imgs/password-icon.png" : "qrc:/imgs/password-green-icon.png"
+                }
+                TextField {
+                    id: passwordField
+                    Layout.fillWidth: true
+                    placeholderText: qsTr("Password")
+                    inputMethodHints: Qt.ImhNoPredictiveText
+                    echoMode: showPassword ? TextInput.Normal : TextInput.Password
+                    rightPadding: 40
+                    Image {
+                        source: showPassword ? "qrc:/imgs/show-pass-icon.png" : "qrc:/imgs/hide-pass-icon.png"
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: showPassword = !showPassword
+                        }
 
-        Label {
-            text: "Sign in"
-            color: "blue"
-            Layout.alignment: Qt.AlignHCenter
-            MouseArea {
-                anchors.fill: parent
-                onClicked: stackView.pop()
+                        anchors {right: parent.right; verticalCenter: parent.verticalCenter; rightMargin: 5}
+                    }
+
+                    onTextChanged: {
+                        if (passwordField.length >= 6) {
+                            validPassword = true
+                        } else {
+                            validPassword = false
+                        }
+                    }
+                }
             }
-        }
 
-        BusyIndicator {
-            id: busyIndicator
-            running: auth.requestInProgress
-            Layout.alignment: Qt.AlignHCenter
+            RowLayout {
+                Layout.fillWidth: true
+                Image {
+                    source: "qrc:/imgs/store-icon.png"
+                }
+                TextField {
+                    id: storeField
+                    Layout.fillWidth: true
+                    placeholderText: qsTr("Company Name")
+                }
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Image {
+                    source: "qrc:/imgs/phone-icon.png"
+                }
+                TextField {
+                    id: phoneField
+                    Layout.fillWidth: true
+                    placeholderText: qsTr("Phone Number")
+                }
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Image {
+                    source: "qrc:/imgs/address-icon.png"
+                }
+                TextField {
+                    id: addressField
+                    Layout.fillWidth: true
+                    placeholderText: qsTr("Address")
+                }
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Image {
+                    source: "qrc:/imgs/website-icon.png"
+                }
+                TextField {
+                    id: websiteField
+                    Layout.fillWidth: true
+                    placeholderText: qsTr("Website")
+                }
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Image {
+                    source: "qrc:/imgs/gift-icon.png"
+                }
+                TextField {
+                    id: rewardField
+                    Layout.fillWidth: true
+                    placeholderText: qsTr("Reward Name (e.g. free pizza)")
+                }
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Image {
+                    source: "qrc:/imgs/stamp-icon.png"
+                }
+                TextField {
+                    id: stampsField
+                    Layout.fillWidth: true
+                    placeholderText: qsTr("Stamps Required")
+                }
+            }
+
+
+
+            Button {
+                id: signUpButton
+                text: qsTr("Sign Up")
+                Layout.fillWidth: true
+                enabled: validEmail && validPassword && validName
+                onClicked: {
+                    auth.body = {
+                        "email": emailField.text,
+                        "password": passwordField.text,
+                        "data": {
+                            "role": "customer",
+                            "display_name": nameField.text
+                        }
+                    }
+
+                    auth.sendAuth()
+                }
+            }
+
+            Label {
+                text: "Already have an account?"
+                Layout.alignment: Qt.AlignHCenter
+            }
+
+            Label {
+                text: "Sign in"
+                color: "blue"
+                Layout.alignment: Qt.AlignHCenter
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: stackView.pop()
+                }
+            }
+
+            BusyIndicator {
+                id: busyIndicator
+                running: auth.requestInProgress
+                Layout.alignment: Qt.AlignHCenter
+            }
         }
     }
 

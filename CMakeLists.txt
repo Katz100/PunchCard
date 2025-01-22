@@ -45,10 +45,11 @@ qt_add_qml_module(appMyPunchCard
         QML_FILES qml/RoyaltyCard.qml
 
         RESOURCES android/AndroidManifest.xml android/build.gradle android/res/values/libs.xml android/res/xml/qtprovider_paths.xml android/gradle/wrapper/gradle-wrapper.jar android/gradle/wrapper/gradle-wrapper.properties android/gradle.properties android/gradlew android/gradlew.bat
-        RESOURCES android/src/MyService.java
+        RESOURCES
         QML_FILES qml/UpdatePassword.qml
         QML_FILES qml/DeleteAccount.qml
         QML_FILES qml/CompanySignUp.qml
+        RESOURCES
 )
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
@@ -64,6 +65,8 @@ set_target_properties(appMyPunchCard PROPERTIES
 target_link_libraries(appMyPunchCard
     PRIVATE Qt6::Quick
 )
+
+
 
 include(GNUInstallDirs)
 install(TARGETS appMyPunchCard
