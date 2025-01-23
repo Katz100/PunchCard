@@ -5,6 +5,7 @@ project(MyPunchCard VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTORCC ON)
 
+
 find_package(Qt6 6.5 REQUIRED COMPONENTS Quick)
 
 qt_standard_project_setup(REQUIRES 6.5)
@@ -57,6 +58,8 @@ qt_add_qml_module(appMyPunchCard
         QML_FILES qml/DeleteAccount.qml
         QML_FILES qml/CompanySignUp.qml
         RESOURCES
+        QML_FILES qml/ScanQRCodePage.qml
+        QML_FILES qml/Qt6ScannerOverlay.qml
 )
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an

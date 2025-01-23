@@ -49,6 +49,7 @@ public:
 signals:
 
     void messageReceived(QVariant message);
+
     void apiCallFailed(QString message);
 
     void keyChanged();

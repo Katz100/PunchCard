@@ -207,7 +207,7 @@ Page {
                         "email": emailField.text,
                         "password": passwordField.text,
                         "data": {
-                            "role": "customer",
+                            "role": "company",
                             "display_name": nameField.text
                         }
                     }

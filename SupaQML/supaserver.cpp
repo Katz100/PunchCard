@@ -54,36 +54,41 @@ void SupaServer::sendFunctionCall()
 
     QNetworkReply* reply = m_manager.post(m_request, data);
 
-    QObject::connect(reply, &QNetworkReply::finished, this, [this, reply](){
-        if (reply->error() == QNetworkReply::NoError)
-        {
-            QByteArray response = reply->readAll();
-            QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
-            emit messageReceived(jsonDoc.toVariant());
-        }
-        else
-        {
-            //No connection to supabase
-            if (reply->error() == QNetworkReply::HostNotFoundError || reply->error() == QNetworkReply::UnknownNetworkError)
-            {
-                QJsonObject errorObject;
-                errorObject["supabase_status"] = 404;
-                emit messageReceived(QJsonDocument(errorObject).toVariant());
-            }
-            else
-            {
-                //Invalid operation
-                qDebug() << reply->error();
-                QByteArray response = reply->readAll();
-                QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
+    QObject::connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+        QByteArray response = reply->readAll();
+        QString responseString = QString::fromUtf8(response).trimmed();
 
-                QJsonObject errorObject = jsonDoc.object();
-                errorObject["supabase_status"] = 400;
-                emit messageReceived(QJsonDocument(errorObject).toVariant());
+        if (reply->error() == QNetworkReply::NoError) {
+            if (responseString == "true") {
+                emit messageReceived(QVariant(true));
+            } else if (responseString == "false") {
+                emit messageReceived(QVariant(false));
+            } else {
+                QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
+                if (jsonDoc.isNull()) {
+                    qDebug() << "Invalid JSON response:" << responseString;
+                    emit messageReceived(QVariant());
+                } else {
+                    emit messageReceived(jsonDoc.toVariant());
+                }
             }
+        } else {
+            QJsonObject errorObject;
+            if (reply->error() == QNetworkReply::HostNotFoundError || reply->error() == QNetworkReply::UnknownNetworkError) {
+                errorObject["supabase_status"] = 404;
+            } else {
+                qDebug() << "Error:" << reply->error();
+                QJsonDocument errorDoc = QJsonDocument::fromJson(response);
+                errorObject = errorDoc.object();
+                errorObject["supabase_status"] = 400;
+            }
+
+            emit messageReceived(QJsonDocument(errorObject).toVariant()); // Emit error as JSON
         }
+
         reply->deleteLater();
     });
+
 
 }
 

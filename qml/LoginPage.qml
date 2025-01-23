@@ -45,7 +45,7 @@ Page {
 
             TextField {
                 id: emailField
-                text: "w1794979@apps.losrios.edu"
+                text: "rkatz108@gmail.com"
                 Layout.fillWidth: true
                 placeholderText: qsTr("Email")
                 inputMethodHints: Qt.ImhNoPredictiveText
@@ -67,7 +67,7 @@ Page {
             }
             TextField {
                 id: passwordField
-                text: "password"
+                text: "mypassword"
                 Layout.fillWidth: true
                 placeholderText: qsTr("Password")
                 inputMethodHints: Qt.ImhNoPredictiveText
