@@ -80,10 +80,7 @@ Page {
                            }
     }
     Component.onCompleted: {
-        //Generate QR code for first time login.
-        if (settings.qrCodeData === "") {
             qrCode.requestQRCode()
-        }
     }
 
     footer: Rectangle {

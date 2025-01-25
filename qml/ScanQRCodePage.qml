@@ -18,8 +18,6 @@ Page {
             console.log("Captured")
             isScanning = false
             userId = captured.replace(/"/g, "");
-            console.log(userId)
-            console.log(root.comId)
             server.parameters = {
                 "user_id": userId,
                 "com_id": root.comId
@@ -56,15 +54,20 @@ Page {
 
         onMessageReceived: message => {
                                //user in company
-                               console.log(JSON.stringify(message))
                                if(message) {
+                                    console.log("user in company")
                                     server2.parameters = {
                                        "user_id": userId,
                                        "company": root.comId
                                    }
                                    server2.sendFunctionCall()
                                } else {
-                                   console.log("not in company")
+                                   console.log("user not in company")
+                                   addUserServer.parameters = {
+                                       "user_id": userId,
+                                       "com_id": root.comId
+                                   }
+                                   addUserServer.sendFunctionCall()
                                }
                            }
     }
@@ -77,7 +80,25 @@ Page {
         func: "increment_customer_stamps"
 
         onMessageReceived: message => {
-                                console.log(JSON.stringify(message))
+                               console.log("user stamps incremented")
+                                stackView.pop()
+                           }
+    }
+
+    SupaServer {
+        id: addUserServer
+        projectId: root.projectId
+        key: root.key
+        authorization: root.jwt
+        func: "add_user_to_company"
+
+        onMessageReceived: message => {
+                               console.log("user added to company")
+                               server2.parameters = {
+                                  "user_id": userId,
+                                  "company": root.comId
+                              }
+                              server2.sendFunctionCall()
                            }
     }
 }

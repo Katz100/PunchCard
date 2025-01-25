@@ -5,6 +5,7 @@ import SupaQML
 import com.scythestudio.scodes 1.0
 //TODO: password recovery endpoint
 //TODO: change qr code for different login
+//TODO: add android camera permissions
 Window {
     id: root
     width: 640
@@ -70,4 +71,5 @@ Window {
                        return;
                    }
                }
+
 }
