@@ -56,6 +56,7 @@ Page {
                     totalPunches: stamps_required
                     companyName: company_name
                     completedPunches: stamps_count
+                    rewards: reward_count
                     punchSize: 40
                     spacing: 12
                     columns: 6
@@ -124,7 +125,8 @@ Page {
                                    punchCardListModel.append({
                                                                  company_name: item.company_name,
                                                                  stamps_required: item.stamps_required,
-                                                                 stamps_count: item.stamps_count
+                                                                 stamps_count: item.stamps_count,
+                                                                 reward_count: item.reward_count
                                                              });
                                }
                            }

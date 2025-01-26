@@ -28,6 +28,7 @@ Page {
 
     Button {
         text: "Scan QR Code"
+        anchors.centerIn: parent
         onClicked: {
             stackView.push("ScanQRCodePage.qml")
         }

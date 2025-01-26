@@ -10,6 +10,7 @@ Rectangle {
     property int punchSize: 40
     property int spacing: 12
     property int columns: 4
+    property int  rewards: 0
 
     radius: 12
     color: "#F5F5F5"
@@ -18,7 +19,7 @@ Rectangle {
 
     // Dynamically calculate the size
     implicitWidth: (columns * punchSize) + ((columns - 1) * spacing) + 32
-    implicitHeight: (Math.ceil(totalPunches / columns) * punchSize) + ((Math.ceil(totalPunches / columns) - 1) * spacing) + 120
+    implicitHeight: (Math.ceil(totalPunches / columns) * punchSize) + ((Math.ceil(totalPunches / columns) - 1) * spacing) + 140
 
     ColumnLayout {
         anchors.fill: parent
@@ -71,6 +72,15 @@ Rectangle {
             horizontalAlignment: Text.AlignHCenter
             Layout.alignment: Qt.AlignHCenter
         }
+
+        Text {
+                    text: "You have " + rewards + " reward(s) available!"
+                    font.pixelSize: 16
+                    color: "#4CAF50"
+                    font.bold: true
+                    horizontalAlignment: Text.AlignHCenter
+                    Layout.alignment: Qt.AlignHCenter
+                }
 
     }
 }

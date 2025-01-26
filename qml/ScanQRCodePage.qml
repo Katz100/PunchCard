@@ -81,7 +81,9 @@ Page {
 
         onMessageReceived: message => {
                                console.log("user stamps incremented")
-                                stackView.pop()
+                               root.custId = userId
+                               stackView.pop()
+                               stackView.push("CustomerPunchCardPage.qml")
                            }
     }
 

@@ -2,8 +2,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QSslSocket>
-
-
+#include <QPermissions>
 
 int main(int argc, char *argv[])
 {
@@ -16,6 +15,9 @@ int main(int argc, char *argv[])
 #else
         qmlRegisterType<SBarcodeScanner>("com.scythestudio.scodes", 1, 0, "SBarcodeScanner");
 #endif
+
+        qApp->requestPermission(QCameraPermission{}, [](const QPermission &permission) {
+        });
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreationFailed,
