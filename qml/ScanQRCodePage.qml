@@ -12,7 +12,7 @@ Page {
         forwardVideoSink: videoOutput.videoSink
         scanning: isScanning
 
-        captureRect: Qt.rect(1 / 4, 1 / 4, 1 / 2, 1 / 2)
+        captureRect: Qt.rect(0, 0, 1, 1)
 
         onCapturedChanged: function (captured) {
             console.log("Captured")

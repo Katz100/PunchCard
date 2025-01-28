@@ -53,9 +53,10 @@ Page {
         projectId: root.projectId
         key: root.key
         authorization: root.jwt
-        func: "get_user_punchcard_info"
+        func: "get_user_punchcard_info_for"
         parameters: {
-            "user_id": root.custId
+            "user_id": root.custId,
+            "com_id": root.comId
         }
 
         Component.onCompleted: {

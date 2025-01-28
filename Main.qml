@@ -47,12 +47,14 @@ Window {
 
 
     onClosing: close => {
-                   if(stackView.depth > 1 && (stackView.currentItem.objectName !== "CustomerHomePage" || stackView.currentItem.objectName !==  "CompanyHomePage")){
+                   if(stackView.depth > 1 && (stackView.currentItem.objectName !== "CustomerHomePage" && stackView.currentItem.objectName !==  "CompanyHomePage")){
                        close.accepted = false
                        stackView.pop();
                    }else{
                        return;
                    }
                }
+
+
 
 }

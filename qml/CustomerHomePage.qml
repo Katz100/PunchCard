@@ -72,8 +72,8 @@ Page {
 
     QRCode {
         id: qrCode
-        width: 150
-        height: 150
+        width: 250
+        height: 250
         data: JSON.stringify(Data.userDetails.user.identities[0].user_id)
 
         onMessageReceived: message => {

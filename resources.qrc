@@ -20,5 +20,7 @@
         <file>imgs/stamp-icon.png</file>
         <file>imgs/store-icon.png</file>
         <file>imgs/website-icon.png</file>
+        <file>imgs/scan-icon.png</file>
+        <file>imgs/users-icon.png</file>
     </qresource>
 </RCC>

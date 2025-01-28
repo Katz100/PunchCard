@@ -74,13 +74,14 @@ Rectangle {
         }
 
         Text {
-                    text: "You have " + rewards + " reward(s) available!"
-                    font.pixelSize: 16
-                    color: "#4CAF50"
-                    font.bold: true
-                    horizontalAlignment: Text.AlignHCenter
-                    Layout.alignment: Qt.AlignHCenter
-                }
+            visible: rewards !== 0
+            text: "You have " + rewards + " reward(s) available!"
+            font.pixelSize: 16
+            color: "#4CAF50"
+            font.bold: true
+            horizontalAlignment: Text.AlignHCenter
+            Layout.alignment: Qt.AlignHCenter
+        }
 
     }
 }
