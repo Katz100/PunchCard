@@ -132,4 +132,31 @@ Page {
                            }
     }
 
+    SupaSocket {
+        id: socket
+        sendHeartbeatMessage: true
+        projectId: "affixqvkrgfahaizxrhl"
+        key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmZml4cXZrcmdmYWhhaXp4cmhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzMyNjE0NTIsImV4cCI6MjA0ODgzNzQ1Mn0.eyahwokwXcpwpWdYGCpskVcswqNh9ZzxHpsdiV8gxoM"
+        Component.onCompleted: {
+            socket.openConnection()
+        }
+        payload: {
+            "event": "phx_join",
+            "topic": "realtime:public:customer_stamps",
+            "ref": "1",
+            "payload": {
+                "schema": "public",
+                "table": "customer_stamps"
+            }
+        }
+
+        onMessageReceived: message => {
+                               if (message.event === "UPDATE") {
+                                   if (message.payload.record.profile_id === Data.userDetails.user.identities[0].user_id) {
+                                       server.sendFunctionCall()
+                                   }
+                               }
+                           }
+    }
+
 }
