@@ -137,6 +137,7 @@ Page {
         sendHeartbeatMessage: true
         projectId: "affixqvkrgfahaizxrhl"
         key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmZml4cXZrcmdmYWhhaXp4cmhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzMyNjE0NTIsImV4cCI6MjA0ODgzNzQ1Mn0.eyahwokwXcpwpWdYGCpskVcswqNh9ZzxHpsdiV8gxoM"
+        authorization: root.jwt
         Component.onCompleted: {
             socket.openConnection()
         }

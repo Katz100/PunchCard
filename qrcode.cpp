@@ -15,7 +15,6 @@ void QRCode::requestQRCode()
         if (reply->error() == QNetworkReply::NoError)
         {
             QString img = reply->readAll().toBase64();
-            qDebug() << img;
             emit messageReceived(img);
         }
         else

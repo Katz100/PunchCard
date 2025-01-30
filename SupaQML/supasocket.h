@@ -13,6 +13,7 @@ class SupaSocket : public QObject
     Q_OBJECT
     Q_PROPERTY(QString projectId READ projectId WRITE setProjectId NOTIFY projectIdChanged FINAL)
     Q_PROPERTY(QString key READ key WRITE setKey NOTIFY keyChanged FINAL)
+    Q_PROPERTY(QString authorization READ authorization WRITE setAuthorization NOTIFY authorizationChanged FINAL)
     Q_PROPERTY(QJsonObject payload READ payload WRITE setPayload NOTIFY payloadChanged FINAL)
     Q_PROPERTY(bool sendHeartbeatMessage READ sendHeartbeatMessage WRITE setSendHeartbeatMessage NOTIFY sendHeartbeatMessageChanged FINAL)
     QML_ELEMENT
@@ -37,6 +38,9 @@ public:
     bool sendHeartbeatMessage() const;
     void setSendHeartbeatMessage(bool newSendHeartbeatMessage);
 
+    QString authorization() const;
+    void setAuthorization(const QString &newAuthorization);
+
 signals:
     void messageReceived(QVariant message);
     void projectIdChanged();
@@ -46,6 +50,8 @@ signals:
 
     void sendHeartbeatMessageChanged();
 
+    void authorizationChanged();
+
 private:
     QString m_projectId;
     QString m_key;
@@ -53,6 +59,7 @@ private:
     QWebSocket m_webSocket;
     QTimer* timer;
     bool m_sendHeartbeatMessage;
+    QString m_authorization;
 };
 
 #endif // SUPASOCKET_H

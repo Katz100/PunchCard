@@ -7,7 +7,7 @@ project(MyPunchCard VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Core Quick Multimedia QuickTest Qml)
+find_package(Qt6 6.5 REQUIRED COMPONENTS Core Quick Multimedia)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
@@ -77,8 +77,7 @@ set_target_properties(appMyPunchCard PROPERTIES
 
 target_link_libraries(appMyPunchCard
     PRIVATE Qt6::Quick
-    PRIVATE Qt6::QuickTest
-    PRIVATE Qt6::Qml
+    PRIVATE Qt6::Core
     PUBLIC SCodes
 )
 

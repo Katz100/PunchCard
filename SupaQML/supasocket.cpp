@@ -3,6 +3,7 @@
 SupaSocket::SupaSocket(QObject *parent)
     : QObject{parent}
 {
+
     timer = new QTimer(this);
     QObject::connect(timer, &QTimer::timeout, this, [this](){
         if (m_sendHeartbeatMessage && m_webSocket.state() == QAbstractSocket::ConnectedState)
@@ -20,6 +21,17 @@ SupaSocket::SupaSocket(QObject *parent)
     timer->start(30000);
     QObject::connect(&m_webSocket, &QWebSocket::connected, this, [this](){
         sendTextMessage(m_payload);
+        if (m_authorization != "")
+        {
+            QJsonObject access;
+            access["event"] = "access_token";
+            access["topic"] = m_payload["topic"];
+            QJsonObject payloadItem;
+            payloadItem["access_token"] = m_authorization;
+            access["payload"] = payloadItem;
+            access["ref"] = QString::number(QDateTime::currentMSecsSinceEpoch());
+            sendTextMessage(access);
+        }
     });
 
     QObject::connect(&m_webSocket, &QWebSocket::disconnected, this, [](){
@@ -122,4 +134,17 @@ void SupaSocket::setSendHeartbeatMessage(bool newSendHeartbeatMessage)
         return;
     m_sendHeartbeatMessage = newSendHeartbeatMessage;
     emit sendHeartbeatMessageChanged();
+}
+
+QString SupaSocket::authorization() const
+{
+    return m_authorization;
+}
+
+void SupaSocket::setAuthorization(const QString &newAuthorization)
+{
+    if (m_authorization == newAuthorization)
+        return;
+    m_authorization = newAuthorization;
+    emit authorizationChanged();
 }

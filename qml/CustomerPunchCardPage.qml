@@ -29,7 +29,7 @@ Page {
         onClicked: {
             server2.parameters = {
                 "user_id": root.custId,
-                "company": root.comId
+                "com_id": root.comId
             }
             server2.sendFunctionCall()
         }

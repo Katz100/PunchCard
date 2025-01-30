@@ -58,7 +58,7 @@ Page {
                                     console.log("user in company")
                                     server2.parameters = {
                                        "user_id": userId,
-                                       "company": root.comId
+                                       "com_id": root.comId
                                    }
                                    server2.sendFunctionCall()
                                } else {
