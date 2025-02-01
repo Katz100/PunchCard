@@ -1,9 +1,11 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import "userData.js" as Data
 import SupaQML
 
 Page {
+    objectName: "CustomerPunchCard"
     property int punches: 0
     property string comName: ""
     property int count: 0
@@ -26,6 +28,7 @@ Page {
         id: punchButton
         anchors {top: card.bottom; left: card.left; topMargin: 20}
         text: "Punch Card"
+        visible: Data.userDetails.user.user_metadata.role === "company"
         onClicked: {
             server2.parameters = {
                 "user_id": root.custId,
@@ -39,6 +42,7 @@ Page {
         id: claimButton
         anchors {top: card.bottom; right: card.right; topMargin: 20}
         text: "Claim Reward"
+        visible: Data.userDetails.user.user_metadata.role === "company"
         onClicked: {
             claimServer.parameters = {
                 "user_id": root.custId,

@@ -81,7 +81,7 @@ Page {
                            }
     }
     Component.onCompleted: {
-            qrCode.requestQRCode()
+        qrCode.requestQRCode()
     }
 
     footer: Rectangle {
@@ -155,9 +155,16 @@ Page {
                                if (message.event === "UPDATE") {
                                    if (message.payload.record.profile_id === Data.userDetails.user.identities[0].user_id) {
                                        server.sendFunctionCall()
+                                       root.comId = message.payload.record.company_id
+                                       root.custId = Data.userDetails.user.identities[0].user_id
+                                       if (stackView.currentItem.objectName !== "CustomerPunchCard") {
+                                           stackView.push("CustomerPunchCardPage.qml")
+                                       }
                                    }
                                }
                            }
     }
+
+
 
 }

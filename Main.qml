@@ -2,7 +2,6 @@ import QtQuick
 import QtQuick.Controls
 import QtCore
 import SupaQML
-import QtTest
 import com.scythestudio.scodes 1.0
 //TODO: password recovery endpoint
 //TODO: change qr code for different login
@@ -46,6 +45,10 @@ Window {
         id: punchCardListModel
     }
 
+    ListModel {
+        id: customerListModel
+    }
+
 
     onClosing: close => {
                    if(stackView.depth > 1 && (stackView.currentItem.objectName !== "CustomerHomePage" && stackView.currentItem.objectName !==  "CompanyHomePage")){
@@ -56,13 +59,5 @@ Window {
                    }
                }
 
-
-    TestCase {
-        name: "TestCaseName"
-        when: windowShown
-        function test_TestFunctionName() {
-            verify(1 + 1, 2, "1+1=2")
-        }
-    }
 
 }

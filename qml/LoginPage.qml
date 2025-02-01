@@ -148,6 +148,7 @@ Page {
                                    dialog.open()
                                } else if (message.supabase_status === 200) {
                                    invalidInformation = false
+                                   console.log(JSON.stringify(message, null, 2))
                                    Data.userDetails = message
                                    root.jwt = Data.userDetails.access_token
                                    if (Data.userDetails.user.user_metadata.role === "customer") {

@@ -49,6 +49,7 @@ void SupaServer::sendFunctionCall()
     m_request.setRawHeader("apikey", m_key.toUtf8());
     m_request.setRawHeader("Authorization", QString("Bearer %1").arg(m_authorization).toUtf8());
     m_request.setUrl(QUrl(new_url));
+
     QJsonDocument doc(m_parameters);
     QByteArray data = doc.toJson(QJsonDocument::Compact);
 
@@ -88,8 +89,6 @@ void SupaServer::sendFunctionCall()
 
         reply->deleteLater();
     });
-
-
 }
 
 QVariant SupaServer::sendQuery(QString table, QString query)
