@@ -10,6 +10,7 @@ Page {
     property string comName: ""
     property int count: 0
     property int rewards_count: 0
+    property string reward_name: ""
 
 
     RoyaltyCard {
@@ -52,6 +53,27 @@ Page {
         }
     }
 
+    Text {
+        id: rewardTxt
+        anchors {bottom: parent.bottom; horizontalCenter: parent.horizontalCenter; bottomMargin: 40}
+        font.pixelSize: 18
+        font.bold: true
+        color: "gold"
+        opacity: 0
+        text: rewards_count > 0 ? `🎉 Congratulations! You've earned a ${reward_name}! 🎁` : ""
+
+        Behavior on opacity { NumberAnimation { duration: 500 } }
+
+        Connections {
+            target: server
+            onMessageReceived: {
+                if (rewards_count > 0) {
+                    rewardTxt.opacity = 1
+                }
+            }
+        }
+    }
+
     SupaServer {
         id: server
         projectId: root.projectId
@@ -69,11 +91,11 @@ Page {
 
         onMessageReceived: message => {
                                console.log("user info received")
-                               console.log(JSON.stringify(message,null,2))
                                punches = message[0].stamps_required
                                comName = message[0].company_name
                                count = message[0].stamps_count
                                rewards_count = message[0].reward_count
+                               reward_name = message[0].reward
                            }
     }
 

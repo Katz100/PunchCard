@@ -60,6 +60,10 @@ Page {
                     punchSize: 40
                     spacing: 12
                     columns: 6
+
+                    Text {
+                        text: reward_name
+                    }
                 }
             }
         }
@@ -126,7 +130,8 @@ Page {
                                                                  company_name: item.company_name,
                                                                  stamps_required: item.stamps_required,
                                                                  stamps_count: item.stamps_count,
-                                                                 reward_count: item.reward_count
+                                                                 reward_count: item.reward_count,
+                                                                 reward_name: item.reward
                                                              });
                                }
                            }
