@@ -1,81 +1,34 @@
-name: CI-android
-#test
-on: [push, pull_request, workflow_dispatch]
+name: CI
 
+on: push # when to trigger this. Here, on every push
 jobs:
-  test:
-    runs-on: ${{ matrix.os }}
+  build_and_test:
+    name: "Build and test"
     strategy:
-      fail-fast: false
       matrix:
-        os:
-          - ubuntu-22.04
-          - windows-2022
-          - macos-15
-        qt:
-          - version: "5.15.2"
-            ndk-version: r21e
-            modules:
-            example-archives: qtbase qtsensors
-            example-modules:
-          - version: "6.3.2"
-            ndk-version: r21e
-            modules: qtsensors
-            example-archives: qtbase
-            example-modules:  qtsensors
-
+        os: [ubuntu-latest, windows-latest] # we build on GitHub-provided Windows and Linux images
+    runs-on: ${{ matrix.os }} # use value from the matrix
     steps:
-      - uses: actions/checkout@v4
+    - name: Install dependencies (linux)
+      run: sudo apt install ninja-build
+      if: matrix.os == 'ubuntu-latest' # conditional, runs this step only on the Ubuntu runner
+    - name: Install Ninja (windows)    # Ninja is not available in GitHub-provided images,
+                                       # see https://github.com/actions/runner-images/issues/514
+      run: choco install ninja         # So let's install it through Chocolatey
+      if: matrix.os == 'windows-latest'
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v3
+      with:
+        version: '6.5.2'
+    - uses: ilammy/msvc-dev-cmd@v1 # This action essentially calls vcvarsall.bat for the latest VS in the runner for x64
+    - uses: actions/checkout@v3    # Actually check out the sources. GH Actions can run for events that may not require
+                                   # sources (e.g. when someone comments on an issue)
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-          cache-dependency-path: action/
-
-      - run: |
-          cd action
-          npm ci || npm install
-        shell: bash
-
-      - run: |
-          cd action
-          npm run build
-
-      - name: Install Qt
-        uses: ./
-        with:
-          target: android
-          modules: ${{ matrix.qt.modules }}
-          version: ${{ matrix.qt.version }}
-          examples: true
-          example-archives: ${{ matrix.qt.example-archives }}
-          example-modules:  ${{ matrix.qt.example-modules }}
-
-      - name: Install Android NDK
-        shell: bash
-        # Links to NDK are at https://github.com/android/ndk/wiki/Unsupported-Downloads
-        run: |
-          if [[ "${RUNNER_OS}" == "Linux" ]]; then
-            export TARGET_ARCH="linux"
-          elif [[ "${RUNNER_OS}" == "Windows" ]]; then
-            export TARGET_ARCH="windows"
-          else
-            export TARGET_ARCH="darwin"
-          fi
-          export NDK_VER_NUM=$(echo ${{ matrix.qt.ndk-version }} | sed -e 's/r(\d+).*/$1/g')
-          # If it's less than 23, append -x86_64
-          if (( "${NDK_VER_NUM}" < 23 )); then
-            export TARGET_ARCH="${TARGET_ARCH}-x86_64"
-          fi;
-          curl -O "https://dl.google.com/android/repository/android-ndk-${{ matrix.qt.ndk-version }}-${TARGET_ARCH}.zip"
-          unzip "android-ndk-${{ matrix.qt.ndk-version }}-${TARGET_ARCH}.zip"
-
-      - name: Build test project
-        env:
-          QT_VERSION: ${{ matrix.qt.version }}
-        run: |
-          export ANDROID_NDK_ROOT=$(pwd)/android-ndk-${{ matrix.qt.ndk-version }}
+    # Here we call CMake manually, there are solutions for that in the Marketplace: https://github.com/marketplace/actions/run-cmake
+    - name: Build
+      # We don't need to set up the environment variable for CMake to see Qt because the install-qt-action
+      # sets up the necessary variables automatically
+      run: cmake -S . -B build -G "Ninja Multi-Config" && cmake --build build --config Debug
           cd ../Qt/Examples/Qt-${{ matrix.qt.version }}/sensors/accelbubble
           qmake || qmake.bat
           make
