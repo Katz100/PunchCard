@@ -63,6 +63,7 @@ qt_add_qml_module(appMyPunchCard
         QML_FILES qml/ScanQRCodePage.qml
         QML_FILES qml/Qt6ScannerOverlay.qml
         QML_FILES qml/CustomerPunchCardPage.qml
+        SOURCES userfilterproxymodel.h userfilterproxymodel.cpp
 )
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an

@@ -1,4 +1,5 @@
 #include "SBarcodeScanner.h"
+#include "userfilterproxymodel.h"
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QSslSocket>
@@ -6,6 +7,9 @@
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
+
+    qmlRegisterType<UserFilterProxyModel>("UserModel", 1, 0, "UserFilterProxyModel");
+
     app.setOrganizationName("Katz Company");
     QQmlApplicationEngine engine;
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)

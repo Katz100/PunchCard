@@ -4,6 +4,7 @@ import QtQuick.Layouts
 import QtCore
 import "userData.js" as Data
 import SupaQML
+import UserModel
 
 Page {
     objectName: "CompanyHomePage"
@@ -25,6 +26,12 @@ Page {
                 }
             }
         }
+    }
+
+    UserFilterProxyModel {
+        id: userModel
+        sourceModel: customerListModel
+
     }
 
     SwipeView {
@@ -52,68 +59,89 @@ Page {
         }
 
         Item {
-            Label {
-                text: "You don't have any customers yet."
-                visible: customerListModel.count === 0
-                anchors.centerIn: parent
-            }
 
-            ListView {
-                id: lv
+            ColumnLayout {
                 anchors.fill: parent
-                model: customerListModel
-                spacing: 20
-                delegate: Rectangle {
-                    id: delegateRect
-                    width: parent.width - 40
-                    height: 70
-                    color: "white"
-                    radius: 8
-                    border.color: "lightgray"
-                    border.width: 1
-                    anchors.horizontalCenter: parent.horizontalCenter
-
-                    RowLayout {
-                        anchors.fill: parent
-                        anchors.margins: 10
-                        spacing: 10
+                spacing: 10
 
 
-                        Image {
-                            id: customerIcon
-                            source: "qrc:/imgs/user-icon.png"
-                            width: 40
-                            height: 40
-                            fillMode: Image.PreserveAspectFit
-                        }
-
-
-                        ColumnLayout {
-                            spacing: 4
-                            Layout.alignment: Qt.AlignVCenter
-
-                            Text {
-                                id: displayName
-                                text: customer_display_name
-                                font.pointSize: 16
-                                font.bold: true
-                                color: "#333333"
-                            }
-
-                            Text {
-                                id: lastStamp
-                                text: "Last Stamp: " + last_stamp
-                                font.pointSize: 12
-                                color: "#777777"
-                            }
-                        }
+                TextField {
+                    id: searchBar
+                    placeholderText: "Search customers..."
+                    Layout.topMargin: 20
+                    Layout.fillWidth: true
+                    onTextChanged: {
+                        // Update the filter string in the C++ model.
+                        userModel.filterString = text;
+                        console.log("Filtering with:", text);
+                        console.log(userModel.toString())
                     }
+                }
 
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            root.custId = customer_id
-                            stackView.push("CustomerPunchCardPage.qml")
+                Label {
+                    text: "You don't have any customers yet."
+                    visible: customerListModel.count === 0
+                    Layout.alignment: Qt.AlignCenter
+                }
+
+                ListView {
+                    id: lv
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    model: userModel
+                    spacing: 20
+                    delegate: Rectangle {
+                        id: delegateRect
+                        width: parent.width - 40
+                        height: 70
+                        color: "white"
+                        radius: 8
+                        border.color: "lightgray"
+                        border.width: 1
+                        anchors.horizontalCenter: parent.horizontalCenter
+
+                        RowLayout {
+                            anchors.fill: parent
+                            anchors.margins: 10
+                            spacing: 10
+
+
+                            Image {
+                                id: customerIcon
+                                source: "qrc:/imgs/user-icon.png"
+                                width: 40
+                                height: 40
+                                fillMode: Image.PreserveAspectFit
+                            }
+
+
+                            ColumnLayout {
+                                spacing: 4
+                                Layout.alignment: Qt.AlignVCenter
+
+                                Text {
+                                    id: displayName
+                                    text: customer_display_name
+                                    font.pointSize: 16
+                                    font.bold: true
+                                    color: "#333333"
+                                }
+
+                                Text {
+                                    id: lastStamp
+                                    text: "Last Stamp: " + last_stamp
+                                    font.pointSize: 12
+                                    color: "#777777"
+                                }
+                            }
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                root.custId = customer_id
+                                stackView.push("CustomerPunchCardPage.qml")
+                            }
                         }
                     }
                 }
@@ -179,8 +207,8 @@ Page {
                                customerListModel.clear()
                                for (let item of message)
                                customerListModel.append({
-                                                            customer_id: item.customer_id,
                                                             customer_display_name: item.customer_display_name,
+                                                            customer_id: item.customer_id,
                                                             last_stamp: item.last_stamp
 
                                                         }
