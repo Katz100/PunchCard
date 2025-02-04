@@ -61,14 +61,16 @@ Page {
         color: "gold"
         opacity: 0
         text: rewards_count > 0 ? `🎉 Congratulations! You've earned a ${reward_name}! 🎁` : ""
-
+        wrapMode: Text.WordWrap
         Behavior on opacity { NumberAnimation { duration: 500 } }
 
         Connections {
-            target: server
-            onMessageReceived: {
+           target: server
+           function onMessageReceived(message) {
                 if (rewards_count > 0) {
                     rewardTxt.opacity = 1
+                } else {
+                    rewardTxt.opacity = 0
                 }
             }
         }

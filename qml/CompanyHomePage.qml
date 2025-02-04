@@ -70,11 +70,10 @@ Page {
                     placeholderText: "Search customers..."
                     Layout.topMargin: 20
                     Layout.fillWidth: true
+                    Layout.leftMargin: 20
+                    Layout.rightMargin: 20
                     onTextChanged: {
-                        // Update the filter string in the C++ model.
                         userModel.filterString = text;
-                        console.log("Filtering with:", text);
-                        console.log(userModel.toString())
                     }
                 }
 
