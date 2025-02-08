@@ -45,7 +45,6 @@ Page {
 
             TextField {
                 id: emailField
-                text: "rkatz108@gmail.com"
                 Layout.fillWidth: true
                 placeholderText: qsTr("Email")
                 inputMethodHints: Qt.ImhNoPredictiveText
@@ -67,7 +66,6 @@ Page {
             }
             TextField {
                 id: passwordField
-                text: "mypassword"
                 Layout.fillWidth: true
                 placeholderText: qsTr("Password")
                 inputMethodHints: Qt.ImhNoPredictiveText
@@ -103,7 +101,7 @@ Page {
             id: signInButton
             text: qsTr("Sign In")
             Layout.fillWidth: true
-            //enabled: validEmail && validPassword
+            enabled: validEmail && validPassword
             onClicked: {
                 auth.body = {
                     "email": emailField.text,
